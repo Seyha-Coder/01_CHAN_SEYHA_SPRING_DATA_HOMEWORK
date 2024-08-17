@@ -1,6 +1,5 @@
 package com.example.SpringDataHomework.model.response;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -18,7 +17,6 @@ public class ProductOrderResponse {
     private String description;
     private Integer quantity;
 
-    // Constructor that matches the parameters you're using
     public ProductOrderResponse(Long id, String productName, BigDecimal unitPrice, String description, Integer quantity) {
         this.id = id;
         this.productName = productName;

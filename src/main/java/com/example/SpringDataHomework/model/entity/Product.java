@@ -1,6 +1,9 @@
 package com.example.SpringDataHomework.model.entity;
 
+import com.example.SpringDataHomework.model.response.ProductOrderResponse;
 import com.example.SpringDataHomework.model.response.ProductResponse;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,6 +12,7 @@ import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Setter
 @Getter
@@ -26,6 +30,7 @@ public class Product {
     private BigDecimal unitPrice;
     private String description;
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+    @JsonBackReference
     private Set<ProductOrder> productOrderList;
 
     public Product(Long id, String productName,BigDecimal unitPrice, String description){
@@ -35,10 +40,6 @@ public class Product {
         this.description=description;
     }
     public ProductResponse toProductResponse(){
-//        Set<ProductOrder> productOrders = new HashSet<>();
-//        for(ProductOrder productOrder: productOrderList){
-//            productOrders.add(productOrder);
-//        }
-        return new ProductResponse(this.id,this.productName,this.unitPrice, this.description);
+        return new ProductResponse(this.id, this.productName, this.unitPrice, this.description);
     }
 }

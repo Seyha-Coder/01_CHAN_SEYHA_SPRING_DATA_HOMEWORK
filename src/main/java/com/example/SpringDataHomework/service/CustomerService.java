@@ -10,7 +10,7 @@ import java.util.Optional;
 
 public interface CustomerService {
     public CustomerResponse saveCustomer(CustomerRequest customerRequest);
-    public Page<Customer> findAllCustomer(int pageNo, int pageSize, String sortBy, String sortDirection);
+    public Page<CustomerResponse> findAllCustomer(int pageNo, int pageSize, String sortBy, String sortDirection);
     public CustomerResponse findCustomerById(Long id);
     public CustomerResponse updateCustomer(Long id, CustomerRequest customerRequest);
     public void removeCustomerById(Long id);

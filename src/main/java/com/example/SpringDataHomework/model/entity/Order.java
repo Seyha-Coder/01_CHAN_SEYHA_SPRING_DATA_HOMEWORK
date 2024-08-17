@@ -29,13 +29,12 @@ public class Order {
 
     @Column(name = "order_date")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yy-MM-dd")
-    private Date orderDate;
+    private Date orderDate = new Date();
 
     @Column(name = "total_amount")
     private BigDecimal totalAmount;
 
     @Column(name = "status")
-    @Enumerated(EnumType.STRING)
     private OrderStatus status;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -46,13 +45,14 @@ public class Order {
     private Set<ProductOrder> productOrders = new HashSet<>();
 
     public OrderResponse toOrderResponse() {
-        Set<ProductOrderResponse> productOrderResponses = productOrders.stream()
-                .map(po -> new ProductOrderResponse(
-                        po.getProduct().getId(),
-                        po.getProduct().getProductName(),
-                        po.getProduct().getUnitPrice(),
-                        po.getProduct().getDescription(),
-                        po.getQuantity()))
+        Set<ProductOrderResponse> productOrderResponses = this.productOrders.stream()
+                .map(productOrder -> new ProductOrderResponse(
+                                        productOrder.getId(),
+                        productOrder.getProduct().getProductName(), // Set the order ID here
+                        productOrder.getProduct().getUnitPrice(),
+                        productOrder.getProduct().getDescription(),
+                        productOrder.getQuantity()
+                                ))
                 .collect(Collectors.toSet());
 
         return new OrderResponse(this.id, this.orderDate, this.totalAmount, this.status, productOrderResponses);

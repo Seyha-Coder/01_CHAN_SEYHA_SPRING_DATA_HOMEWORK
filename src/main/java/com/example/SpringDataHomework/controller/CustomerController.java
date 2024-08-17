@@ -40,7 +40,7 @@ public class CustomerController {
             @RequestParam(defaultValue = "customerName") String sortBy,
             @RequestParam(defaultValue = "DESC") String sortDirection
     ){
-        Page<Customer> customerResponse = customerService.findAllCustomer(pageNo,pageSize,sortBy,sortDirection);
+        Page<CustomerResponse> customerResponse = customerService.findAllCustomer(pageNo,pageSize,sortBy,sortDirection);
         ApiResponse apiResponse = ApiResponse.builder()
                 .message("Get all customers successfully.")
                 .status(HttpStatus.OK)

@@ -21,7 +21,6 @@ public class CustomerRequest {
     @NotNull(message = "Phone number must not be null!")
     private String phone;
 
-    @Pattern(regexp = "")
     @NotNull(message = "Email must not be null!")
     private String email;
 

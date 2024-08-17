@@ -22,12 +22,15 @@ public class CustomerServiceImpl implements CustomerService {
         return customerRepository.save(customerRequest.toEntity()).toResponse();
     }
     @Override
-    public Page<Customer> findAllCustomer(int pageNo, int pageSize, String sortBy, String sortDirection) {
+    public Page<CustomerResponse> findAllCustomer(int pageNo, int pageSize, String sortBy, String sortDirection) {
         Sort sort = sortDirection.equalsIgnoreCase(Sort.Direction.ASC.name()) ?
                 Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
-        Pageable pageRequest = PageRequest.of(pageNo, pageSize, sort);
-        return customerRepository.findAll(pageRequest);
+        Pageable pageable = PageRequest.of(pageNo, pageSize, sort);
+
+        Page<Customer> customers = customerRepository.findAll(pageable);
+        return customers.map(Customer::toResponse);
     }
+
 
     @Override
     public CustomerResponse findCustomerById(Long id) {
@@ -42,7 +45,7 @@ public class CustomerServiceImpl implements CustomerService {
        customerRepository.findById(id).orElseThrow(
                 ()-> new CustomNotfoundException("Customer with id "+ id + "not found!")
         ).toResponse();
-        return customerRepository.save(customerRequest.toEntity(id)).toResponse();
+        return customerRepository.save(customerRequest.toEntity(id)).toResponseWithOrder();
     }
 
     @Override

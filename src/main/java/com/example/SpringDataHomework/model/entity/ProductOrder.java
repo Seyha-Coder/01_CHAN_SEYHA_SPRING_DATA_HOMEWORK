@@ -2,6 +2,8 @@ package com.example.SpringDataHomework.model.entity;
 
 import com.example.SpringDataHomework.model.response.ProductOrderResponse;
 import com.example.SpringDataHomework.model.response.ProductResponse;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,23 +28,15 @@ public class ProductOrder {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id")
+    @JsonManagedReference
     private Product product;
 
     @Column(name = "quantity")
     private Integer quantity;
 
-//    public ProductOrderResponse toResponse() {
-//        ProductResponse productResponse = this.product != null ? new ProductResponse(
-//                this.product.getId(),
-//                this.product.getProductName(),
-//                this.product.getUnitPrice(),
-//                this.product.getDescription()
-//        ) : null;
-//
-//        return new ProductOrderResponse(
-//                this.id,
-//                productResponse,
-//                this.quantity
-//        );
-//    }
+    public ProductOrder(Integer quantity, Order order, Product product){
+        this.order=order;
+        this.product=product;
+        this.quantity=quantity;
+    }
 }

@@ -1,6 +1,5 @@
 package com.example.SpringDataHomework.service;
 
-import com.example.SpringDataHomework.model.entity.Order;
 import com.example.SpringDataHomework.model.enums.OrderStatus;
 import com.example.SpringDataHomework.model.request.OrderRequest;
 import com.example.SpringDataHomework.model.response.OrderResponse;

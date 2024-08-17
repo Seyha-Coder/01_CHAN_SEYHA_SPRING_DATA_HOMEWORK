@@ -89,7 +89,7 @@ public class OrderServiceImpl implements OrderService {
     public List<OrderResponse> findByCustomerId(Long customerId) {
         CustomerResponse customer = customerService.findCustomerById(customerId);
 
-        Set<Order> orders = (Set<Order>) orderRepository.findByCustomer_Id(customerId);
+        List<Order> orders = orderRepository.findByCustomer_Id(customerId);
 
         return orders.stream()
                 .map(order -> {
@@ -107,6 +107,7 @@ public class OrderServiceImpl implements OrderService {
                 })
                 .collect(Collectors.toList());
     }
+
 
     @Override
     public OrderResponse updateStatus(Long id, OrderStatus status) {

@@ -1,5 +1,6 @@
 package com.example.SpringDataHomework.model.entity;
 
+import com.example.SpringDataHomework.model.request.CustomerRequest;
 import com.example.SpringDataHomework.model.response.CustomerResponse;
 import com.example.SpringDataHomework.model.response.OrderResponse;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -40,12 +41,31 @@ public class Customer {
         this.phoneNumber=phoneNumber;
         this.email=email;
     }
-    public CustomerResponse toResponse(){
+    public CustomerResponse toResponse() {
         Set<OrderResponse> orderResponses = new HashSet<>();
-        for(Order order : orderList){
-            orderResponses.add(order.toOrderResponse());
+        if (orderList != null && !orderList.isEmpty()) {
+            for (Order order : orderList) {
+                orderResponses.add(order.toOrderResponse());
+            }
         }
-        return new CustomerResponse(this.id,this.customerName,this.address,this.phoneNumber,this.email);
+        return new CustomerResponse(this.id, this.customerName, this.address, this.phoneNumber, this.email, orderResponses);
+    }
+
+    public CustomerResponse toResponseWithOrder(){
+        Set<OrderResponse> orderResponses = new HashSet<>();
+        if (orderList != null && !orderList.isEmpty()) {
+            for (Order order : orderList) {
+                orderResponses.add(order.toOrderResponse());
+            }
+        }
+        return new CustomerResponse(
+                this.id,
+                this.customerName,
+                this.address,
+                this.phoneNumber,
+                this.email,
+                orderResponses
+        );
     }
 
 }
