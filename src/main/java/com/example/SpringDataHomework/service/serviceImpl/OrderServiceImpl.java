@@ -9,7 +9,7 @@ import com.example.SpringDataHomework.model.enums.OrderStatus;
 import com.example.SpringDataHomework.model.request.OrderRequest;
 import com.example.SpringDataHomework.model.response.CustomerResponse;
 import com.example.SpringDataHomework.model.response.OrderResponse;
-import com.example.SpringDataHomework.model.response.ProductResponse;
+import com.example.SpringDataHomework.model.response.ProductOrderResponse;
 import com.example.SpringDataHomework.repository.CustomerRepository;
 import com.example.SpringDataHomework.repository.OrderRepository;
 import com.example.SpringDataHomework.repository.ProductRepository;
@@ -18,22 +18,20 @@ import com.example.SpringDataHomework.service.OrderService;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
 public class OrderServiceImpl implements OrderService {
-    private final OrderRepository orderRepository;
-    private final ProductRepository productRepository;
     private final CustomerRepository customerRepository;
+    private final ProductRepository productRepository;
+    private final OrderRepository orderRepository;
     private final CustomerService customerService;
 
-    public OrderServiceImpl(OrderRepository orderRepository, ProductRepository productRepository, CustomerRepository customerRepository, CustomerService customerService) {
-        this.orderRepository = orderRepository;
-        this.productRepository = productRepository;
+    public OrderServiceImpl(CustomerRepository customerRepository, ProductRepository productRepository, OrderRepository orderRepository, CustomerService customerService) {
         this.customerRepository = customerRepository;
+        this.productRepository = productRepository;
+        this.orderRepository = orderRepository;
         this.customerService = customerService;
     }
 
@@ -46,6 +44,7 @@ public class OrderServiceImpl implements OrderService {
         order.setCustomer(customer);
         order.setOrderDate(new Date());
         order.setStatus(OrderStatus.PENDING);
+        order.setProductOrders(new HashSet<>()); // Initialize the productOrders set
 
         BigDecimal totalAmount = BigDecimal.ZERO;
 
@@ -67,42 +66,44 @@ public class OrderServiceImpl implements OrderService {
         order.setTotalAmount(totalAmount);
         orderRepository.save(order);
 
-        List<ProductResponse> productList = order.getProductOrders().stream()
-                .map(po -> new ProductResponse(
+        Set<ProductOrderResponse> productOrderResponses = order.getProductOrders().stream()
+                .map(po -> new ProductOrderResponse(
                         po.getProduct().getId(),
                         po.getProduct().getProductName(),
                         po.getProduct().getUnitPrice(),
-                        po.getProduct().getDescription()))
-                .collect(Collectors.toList());
+                        po.getProduct().getDescription(),
+                        po.getQuantity()))
+                .collect(Collectors.toSet());
 
-        return new OrderResponse(order.getId(), order.getOrderDate(), order.getTotalAmount(), order.getStatus(), productList);
+        return new OrderResponse(order.getId(), order.getOrderDate(), order.getTotalAmount(), order.getStatus(), productOrderResponses);
     }
+
     @Override
     public OrderResponse findByOrderId(Long orderId) {
-        OrderResponse orderResponses= orderRepository.findById(orderId).orElseThrow(
-                ()-> new CustomNotfoundException("Order with id "+ orderId + " not found.")
-        ).toOrderResponse();
-        return orderResponses;
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new CustomNotfoundException("Order with id " + orderId + " not found."));
+        return order.toOrderResponse();
     }
 
     @Override
     public List<OrderResponse> findByCustomerId(Long customerId) {
-
         CustomerResponse customer = customerService.findCustomerById(customerId);
 
-        List<Order> orders = orderRepository.findByCustomer_Id(customerId);
+        Set<Order> orders = (Set<Order>) orderRepository.findByCustomer_Id(customerId);
 
         return orders.stream()
                 .map(order -> {
-                    List<ProductResponse> productList = order.getProductOrders().stream()
-                            .map(productOrder -> {
-                                Product product = productOrder.getProduct();
-                                return new ProductResponse(product.getId(), product.getProductName(),
-                                        product.getUnitPrice(), product.getDescription());
-                            }).collect(Collectors.toList());
+                    Set<ProductOrderResponse> productOrderResponses = order.getProductOrders().stream()
+                            .map(po -> new ProductOrderResponse(
+                                    po.getProduct().getId(),
+                                    po.getProduct().getProductName(),
+                                    po.getProduct().getUnitPrice(),
+                                    po.getProduct().getDescription(),
+                                    po.getQuantity()))
+                            .collect(Collectors.toSet());
 
                     return new OrderResponse(order.getId(), order.getOrderDate(),
-                            order.getTotalAmount(), order.getStatus(), productList);
+                            order.getTotalAmount(), order.getStatus(), productOrderResponses);
                 })
                 .collect(Collectors.toList());
     }
@@ -117,5 +118,4 @@ public class OrderServiceImpl implements OrderService {
 
         return order.toOrderResponse();
     }
-
 }

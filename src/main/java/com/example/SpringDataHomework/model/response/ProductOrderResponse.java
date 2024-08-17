@@ -1,14 +1,29 @@
 package com.example.SpringDataHomework.model.response;
 
-import com.example.SpringDataHomework.model.entity.Order;
-import com.example.SpringDataHomework.model.entity.Product;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+import java.math.BigDecimal;
+
+@Getter
+@Setter
+//@AllArgsConstructor
+@NoArgsConstructor
 public class ProductOrderResponse {
     private Long id;
-    private OrderResponse order;
-    private ProductResponse product;
+    private String productName;
+    private BigDecimal unitPrice;
+    private String description;
     private Integer quantity;
 
-    public ProductOrderResponse(Long id, ProductResponse productResponse, Integer quantity) {
+    // Constructor that matches the parameters you're using
+    public ProductOrderResponse(Long id, String productName, BigDecimal unitPrice, String description, Integer quantity) {
+        this.id = id;
+        this.productName = productName;
+        this.unitPrice = unitPrice;
+        this.description = description;
+        this.quantity = quantity;
     }
 }

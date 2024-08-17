@@ -1,7 +1,6 @@
 package com.example.SpringDataHomework.model.response;
 
 import com.example.SpringDataHomework.model.entity.Email;
-import com.example.SpringDataHomework.model.entity.Order;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,13 +17,15 @@ public class CustomerResponse {
     private String customerName;
     private String address;
     private String phoneNumber;
-    private Email email;
-    private Set<Order> orderList;
-    public CustomerResponse(Long id, String customerName, String address, String phoneNumber, Email email){
-        this.id=id;
-        this.customerName=customerName;
-        this.address=address;
-        this.phoneNumber= phoneNumber;
-        this.email=email;
+    private Email email; // Ensure Email is correctly included
+    private Set<OrderResponse> orderList; // Add this if you want to include orders
+
+    public CustomerResponse(Long id, String customerName, String address, String phoneNumber, Email email) {
+        this.id = id;
+        this.customerName = customerName;
+        this.address = address;
+        this.phoneNumber = phoneNumber;
+        this.email = email;
     }
+
 }

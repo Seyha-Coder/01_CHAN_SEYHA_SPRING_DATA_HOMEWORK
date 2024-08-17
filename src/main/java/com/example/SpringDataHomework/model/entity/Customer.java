@@ -41,10 +41,11 @@ public class Customer {
         this.email=email;
     }
     public CustomerResponse toResponse(){
-//        Set<OrderResponse> orderResponses = new HashSet<>();
-//        for(Order order : orderList){
-//            orderResponses.add(order.toOrderResponse());
-//        }
+        Set<OrderResponse> orderResponses = new HashSet<>();
+        for(Order order : orderList){
+            orderResponses.add(order.toOrderResponse());
+        }
         return new CustomerResponse(this.id,this.customerName,this.address,this.phoneNumber,this.email);
     }
+
 }
