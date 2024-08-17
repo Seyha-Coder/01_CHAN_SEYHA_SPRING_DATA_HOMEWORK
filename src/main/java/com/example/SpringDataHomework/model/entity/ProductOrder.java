@@ -1,5 +1,7 @@
 package com.example.SpringDataHomework.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -17,6 +19,8 @@ public class ProductOrder {
     private Long id;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_id")
+    @JsonIgnore
+    @JsonBackReference
     private Order order;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id")

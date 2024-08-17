@@ -5,7 +5,10 @@ import com.example.SpringDataHomework.model.entity.Product;
 
 public class ProductOrderResponse {
     private Long id;
-    private Order order;
-    private Product product;
+    private OrderResponse order;
+    private ProductResponse product;
     private Integer quantity;
+
+    public ProductOrderResponse(Long id, ProductResponse productResponse, Integer quantity) {
+    }
 }

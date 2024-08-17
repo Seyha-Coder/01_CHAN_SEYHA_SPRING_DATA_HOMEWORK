@@ -2,6 +2,7 @@ package com.example.SpringDataHomework.model.entity;
 
 import com.example.SpringDataHomework.model.response.CustomerResponse;
 import com.example.SpringDataHomework.model.response.OrderResponse;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

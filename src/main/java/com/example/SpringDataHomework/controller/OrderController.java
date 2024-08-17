@@ -1,5 +1,6 @@
 package com.example.SpringDataHomework.controller;
 
+import com.example.SpringDataHomework.model.enums.OrderStatus;
 import com.example.SpringDataHomework.model.request.OrderRequest;
 import com.example.SpringDataHomework.model.response.ApiResponse;
 import com.example.SpringDataHomework.model.response.OrderResponse;
@@ -60,4 +61,18 @@ public class OrderController {
                 .build();
         return ResponseEntity.ok(response);
     }
+    @PutMapping("/status")
+    public ResponseEntity<?> changeStatus(@RequestParam Long orderId, @RequestParam OrderStatus status) {
+
+        OrderResponse orderResponse = orderService.updateStatus(orderId,status);
+
+        ApiResponse response = ApiResponse.builder()
+                .message("Updated status successfully.")
+                .status(HttpStatus.OK)
+                .code("200")
+                .payload(orderResponse)
+                .build();
+        return ResponseEntity.ok(response);
+    }
+
 }

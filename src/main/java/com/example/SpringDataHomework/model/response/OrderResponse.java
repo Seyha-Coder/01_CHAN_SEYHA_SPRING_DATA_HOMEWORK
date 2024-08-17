@@ -20,7 +20,7 @@ public class OrderResponse {
     private BigDecimal totalAmount;
     private OrderStatus status;
     private Customer customer;
-    private Set<ProductOrder> productOrders;
+    private Set<ProductOrderResponse> productOrders;
     public OrderResponse(Long id, Date orderDate, BigDecimal totalAmount, OrderStatus status, List<ProductResponse> productList) {
         this.id = id;
         this.orderDate = orderDate;
